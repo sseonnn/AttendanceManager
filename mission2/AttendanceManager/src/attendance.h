@@ -5,6 +5,7 @@
 #include <map>
 #include "scoringStrategy.h"
 #include "strategyFactory.h"
+#include "gradeFactory.h"
 
 using std::string;
 using std::vector;
@@ -52,7 +53,8 @@ private:
     Player players[20];
     map<string, int> idMap;
     int idCnt = 0;
-    ScoringStrategyFactory factory;
+    ScoringStrategyFactory scoreFactory;
+    GradeFactory gradeFactory;
 
     const string MONDAY = "monday";
     const string TUESDAY = "tuesday";

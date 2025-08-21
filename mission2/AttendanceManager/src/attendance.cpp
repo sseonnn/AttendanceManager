@@ -50,7 +50,7 @@ void Attendance::calculateStatus() {
 }
 
 int Attendance::calculateScore(string day) {
-	auto strategy = factory.getStrategy(day);
+	auto strategy = scoreFactory.getStrategy(day);
 	return strategy->calculateScore();
 }
 
@@ -92,9 +92,7 @@ int Attendance::getBonusScore(int playerId) {
 }
 
 string Attendance::getGrade(int playerId) {
-	if (players[playerId].score >= 50) return GOLD_GRADE;
-	if (players[playerId].score >= 30) return SILVER_GRADE;
-	return NORMAL_GRADE;
+	return gradeFactory.getGrade(players[playerId].score);
 }
 
 bool Attendance::getIsRemoved(int playerId) {

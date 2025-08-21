@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\attendance.cpp" />
+    <ClCompile Include="src\gradeFactory.cpp" />
     <ClCompile Include="src\scoringStrategy.cpp" />
     <ClCompile Include="src\strategyFactory.cpp" />
     <ClCompile Include="test\attendanceTest.cpp">
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\attendance.h" />
+    <ClInclude Include="src\gradeFactory.h" />
     <ClInclude Include="src\scoringStrategy.h" />
     <ClInclude Include="src\strategyFactory.h" />
   </ItemGroup>
