@@ -22,6 +22,7 @@ TEST(Attendance, checkName) {
 
 	EXPECT_EQ("Umar", attendance.getName(1));
 	EXPECT_EQ("Daisy", attendance.getName(2));
+	EXPECT_EQ("Hannah", attendance.getName(6));
 	EXPECT_EQ("Zane", attendance.getName(19));
 }
 
@@ -31,6 +32,7 @@ TEST(Attendance, checkScore) {
 
 	EXPECT_EQ(48, attendance.getScore(1));
 	EXPECT_EQ(45, attendance.getScore(2));
+	EXPECT_EQ(127, attendance.getScore(6));
 	EXPECT_EQ(1, attendance.getScore(19));
 }
 
@@ -39,16 +41,19 @@ TEST(Attendance, checkGrade) {
 	EXPECT_TRUE(attendance.startAttendanceSystem("attendance_weekday_500.txt"));
 
 	EXPECT_EQ("SILVER", attendance.getPlayerGrade(1));
-	EXPECT_EQ("GOLD", attendance.getPlayerGrade(3));
+	EXPECT_EQ("SILVER", attendance.getPlayerGrade(2));
+	EXPECT_EQ("GOLD", attendance.getPlayerGrade(6));
 	EXPECT_EQ("NORMAL", attendance.getPlayerGrade(19));
 }
 
-TEST(Attendance, checkisRemoved) {
+TEST(Attendance, checkIsRemoved) {
 	Attendance attendance;
 	EXPECT_TRUE(attendance.startAttendanceSystem("attendance_weekday_500.txt"));
 
 	EXPECT_EQ(false, attendance.getisRemoved(1));
 	EXPECT_EQ(false, attendance.getisRemoved(2));
+	EXPECT_EQ(false, attendance.getisRemoved(6));
+	EXPECT_EQ(true, attendance.getisRemoved(13));
 	EXPECT_EQ(true, attendance.getisRemoved(19));
 }
 
