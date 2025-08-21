@@ -61,7 +61,7 @@ using std::ifstream;
 }</span>
 
 <span style = "background-color:#dfd">int Attendance::calculateScore(string day) {
-	auto strategy = factory.getStrategy(day);
+	auto strategy = scoreFactory.getStrategy(day);
 	return strategy-&gt;calculateScore();
 }</span>
 
@@ -103,9 +103,7 @@ using std::ifstream;
 }</span>
 
 <span style = "background-color:#dfd">string Attendance::getGrade(int playerId) {
-	if (players[playerId].score &gt;= 50) return GOLD_GRADE;
-	if (players[playerId].score &gt;= 30) return SILVER_GRADE;
-	return NORMAL_GRADE;
+	return gradeFactory.getGrade(players[playerId].score);
 }</span>
 
 <span style = "background-color:#dfd">bool Attendance::getIsRemoved(int playerId) {
