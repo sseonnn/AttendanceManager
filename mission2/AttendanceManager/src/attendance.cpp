@@ -4,13 +4,9 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include "attendance.h"
 
 using namespace std;
-
-struct AttendanceStatus {
-	string name;
-	string attendanceDay;
-};
 
 map<string, int> idMap;
 int id_cnt = 0;
@@ -186,6 +182,8 @@ void startAttendanceSystem() {
 	printRemovedPlayer();
 }
 
+#ifndef _DEBUG
 int main() {
 	startAttendanceSystem();
 }
+#endif
