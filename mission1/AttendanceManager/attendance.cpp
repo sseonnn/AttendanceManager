@@ -53,14 +53,12 @@ void printRemovedPlayer()
 	}
 }
 
-bool isBonusScore(int playerId)
-{
-	return (dayCnt[playerId][2] >= 10) || (dayCnt[playerId][5] + dayCnt[playerId][6] >= 10);
-}
-
 void addBonusScore(int playerId)
 {
-	if (isBonusScore(playerId)) {
+	if (dayCnt[playerId][2] >= 10) {
+		points[playerId] += 10;
+	}
+	if (dayCnt[playerId][5] + dayCnt[playerId][6] >= 10) {
 		points[playerId] += 10;
 	}
 }
