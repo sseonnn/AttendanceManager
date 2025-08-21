@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>attendance.cpp</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+    <body onload="prettyPrint()">
+        <h4></h4>
+        <pre class="prettyprint lang-cpp linenums">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+#include "attendance.h"
+
+using std::string;
+using std::cout;
+using std::ifstream;
+
+<span style = "background-color:#dfd">bool Attendance::startAttendanceSystem(string fileName) {
+	if (inputFromFile(fileName) == false) return false;
+	calculateStatus();
+	calculateResults();
+	printResult();
+	return true;
+}</span>
+
+<span style = "background-color:#dfd">bool Attendance::inputFromFile(string fileName) {
+	ifstream fin{ fileName }; //500°³ µ¥ÀÌÅÍ ÀÔ·Â
+	for (int weekday = 0; weekday &lt; 500; weekday++) {
+		string name, attendanceDay;
+		fin &gt;&gt; name &gt;&gt; attendanceDay;
+		if (addStatus(AttendanceStatus{ name, attendanceDay }) == false) {
+			return false;</span>
+		}
+<span style = "background-color:#dfd">	}
+	return true;
+}</span>
+
+<span style = "background-color:#dfd">bool Attendance::addStatus(AttendanceStatus status) {
+	if (isValidDay(status.attendanceDay) == false) {
+		return false;</span>
+	}
+<span style = "background-color:#dfd">	records.push_back(status);
+	return true;
+}</span>
+
+<span style = "background-color:#dfd">bool Attendance::isValidDay(string&amp; attendaceDay) {
+	return (attendaceDay == MONDAY) || (attendaceDay == TUESDAY) || (attendaceDay == WEDNESDAY) || (attendaceDay == THURSDAY) || </span>
+		   (attendaceDay == FRIDAY) || (attendaceDay == SATURDAY || (attendaceDay == SUNDAY));
+<span style = "background-color:#dfd">}</span>
+
+<span style = "background-color:#dfd">void Attendance::calculateStatus() {
+	for (const auto&amp; status : records) {
+		updatePlayer(status, calculateScore(status.attendanceDay));
+	}
+}</span>
+
+<span style = "background-color:#dfd">int Attendance::calculateScore(string day) {
+	auto strategy = factory.getStrategy(day);
+	return strategy-&gt;calculateScore();
+}</span>
+
+<span style = "background-color:#dfd">void Attendance::updatePlayer(AttendanceStatus status, int score) {
+	auto&amp; player = players[getId(status.name)];
+	player.name = status.name;
+	player.score += score;
+	if (status.attendanceDay == WEDNESDAY) player.wednesdayCount++;
+	if (status.attendanceDay == SATURDAY || status.attendanceDay == SUNDAY) player.weekendCount++;
+}</span>
+
+<span style = "background-color:#dfd">int Attendance::getId(string name) {
+	if (idMap.count(name) == 0) {
+		idMap.insert({ name, ++idCnt });</span>
+	}
+<span style = "background-color:#dfd">	return idMap[name];
+}</span>
+
+<span style = "background-color:#dfd">void Attendance::calculateResults(void) {
+	for (int id = 1; id &lt;= idCnt; id++) {
+		players[id].score += getBonusScore(id);
+		players[id].grade = getGrade(id);
+		players[id].isRemoved = getIsRemoved(id);
+	}
+}</span>
+
+<span style = "background-color:#dfd">int Attendance::getBonusScore(int playerId) {
+	int bonusScore = 0;</span>
+
+<span style = "background-color:#dfd">	if (players[playerId].wednesdayCount &gt;= 10) {
+		bonusScore += 10;</span>
+	}
+
+<span style = "background-color:#dfd">	if (players[playerId].weekendCount &gt;= 10) {
+		bonusScore += 10;</span>
+	}
+
+<span style = "background-color:#dfd">	return bonusScore;
+}</span>
+
+<span style = "background-color:#dfd">string Attendance::getGrade(int playerId) {
+	if (players[playerId].score &gt;= 50) return GOLD_GRADE;
+	if (players[playerId].score &gt;= 30) return SILVER_GRADE;
+	return NORMAL_GRADE;
+}</span>
+
+<span style = "background-color:#dfd">bool Attendance::getIsRemoved(int playerId) {
+	return (players[playerId].grade == NORMAL_GRADE) &amp;&amp; (players[playerId].wednesdayCount == 0) &amp;&amp; (players[playerId].weekendCount == 0);
+}</span>
+
+void Attendance::printResult(void)
+<span style = "background-color:#dfd">{
+	for (int id = 1; id &lt;= idCnt; id++) {
+		printStatus(id);
+	}
+	printRemovedPlayers();
+}</span>
+
+<span style = "background-color:#dfd">void Attendance::printStatus(int playerId) {
+	cout &lt;&lt; "NAME : " &lt;&lt; players[playerId].name &lt;&lt; ", ";
+	cout &lt;&lt; "POINT : " &lt;&lt; players[playerId].score &lt;&lt; ", ";
+	cout &lt;&lt; "GRADE : " &lt;&lt; players[playerId].grade &lt;&lt; "\n";
+}</span>
+
+<span style = "background-color:#dfd">void Attendance::printRemovedPlayers() {
+	cout &lt;&lt; "\n";
+	cout &lt;&lt; "Removed player\n";
+	cout &lt;&lt; "==============\n";
+	for (int id = 1; id &lt;= idCnt; id++) {
+		if (players[id].isRemoved) {
+			cout &lt;&lt; players[id].name &lt;&lt; "\n";</span>
+		}
+<span style = "background-color:#dfd">	}
+}</span>
+
+<span style = "background-color:#dfd">string Attendance::getName(int playerId) { return players[playerId].name; }
+int Attendance::getScore(int playerId) { return players[playerId].score; }
+bool Attendance::getisRemoved(int playerId) { return players[playerId].isRemoved; }
+string Attendance::getPlayerGrade(int playerId) { return players[playerId].grade; }</span></pre>
+        <hr />
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th align="center">
+                        <small>Generated by</small>
+                        <a href="https://github.com/OpenCppCoverage/OpenCppCoverage/releases">
+                            <strong>OpenCppCoverage (Version: 0.9.9.0)</strong>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </body>
+</html>

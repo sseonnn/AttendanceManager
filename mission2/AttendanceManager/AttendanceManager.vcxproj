@@ -117,6 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\test;$(ProjectDir)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,6 +126,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\attendance.cpp" />
+    <ClCompile Include="src\scoringStrategy.cpp" />
+    <ClCompile Include="src\strategyFactory.cpp" />
     <ClCompile Include="test\attendanceTest.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -137,6 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\attendance.h" />
+    <ClInclude Include="src\scoringStrategy.h" />
+    <ClInclude Include="src\strategyFactory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
